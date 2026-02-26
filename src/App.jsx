@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gift, Mail, PlayCircle, PauseCircle, Heart, Sparkles } from 'lucide-react';
+import { Gift, Mail, PlayCircle, PauseCircle, Heart, Sparkles,Flower2 } from 'lucide-react';
 
 export default function App() {
   const [step, setStep] = useState(0);
@@ -23,7 +23,7 @@ export default function App() {
       size: Math.random() * 20 + 15,
       duration: Math.random() * 5 + 5,
       delay: Math.random() * 2,
-      isHeart: Math.random() > 0.5, // 50% kemungkinan hati, 50% sparkles
+     itemType: Math.floor(Math.random() * 3), // 50% kemungkinan hati, 50% sparkles
     }));
     setFloatingItems(items);
   }, []);
