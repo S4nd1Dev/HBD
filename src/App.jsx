@@ -127,9 +127,9 @@ export default function App() {
               <button onClick={() => setStep(2)} className="px-8 py-3 bg-pink-500 text-white font-bold rounded-full shadow-lg hover:bg-pink-600 transition-colors z-20">
                 Mau banget! 💖
               </button>
-              <motion.button animate={{ x: noPosition.x, y: noPosition.y }} onHoverStart={moveNoButton} onClick={moveNoButton} className="px-8 py-3 bg-white/80 text-gray-700 border-2 border-pink-200 font-bold rounded-full shadow-lg absolute sm:static z-10">
-                Nanti aja deh 🙈
-              </motion.button>
+              <motion.button animate={{ x: noPosition.x, y: noPosition.y }} onHoverStart={moveNoButton} onClick={moveNoButton} className="px-8 py-3 bg-white/80 text-gray-700 border-2 border-pink-200 font-bold rounded-full shadow-lg z-10">
+  Nanti aja deh 🙈
+</motion.button>
             </div>
           </motion.div>
         )}
