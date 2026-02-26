@@ -68,6 +68,21 @@ export default function App() {
     }
   };
 
+  // --- STATE & FUNGSI UNTUK LEDAKAN BUNGA & LOVE DI SURAT ---
+  const [burstItems, setBurstItems] = useState([]);
+
+  const triggerBurst = () => {
+    const newItems = Array.from({ length: 15 }).map((_, i) => ({
+      id: Date.now() + i,
+      x: (Math.random() - 0.5) * 300, // Menyebar luas ke kiri/kanan
+      y: (Math.random() - 0.5) * 300, // Menyebar luas ke atas/bawah
+      scale: Math.random() * 1 + 0.5,
+      rotate: Math.random() * 360,
+      type: Math.random() > 0.5 ? 'heart' : 'flower' // 50% love, 50% bunga
+    }));
+    setBurstItems((prev) => [...prev, ...newItems]);
+  };
+
   // Menentukan warna background berdasarkan step
   const bgClass = step === 5 
     ? 'bg-gradient-to-br from-rose-400 via-pink-500 to-purple-600' // Background akhir yang estetik
@@ -194,7 +209,35 @@ export default function App() {
               <img src="/bunga.jpeg" alt="Foto Kita" className="w-full h-full object-cover" />
             </div>
 
-            <Heart size={48} className="text-pink-500 mx-auto mb-6 animate-pulse" fill="#ec4899" />
+           {/* LOGO HATI YANG BISA DIPENCET */}
+            <motion.div 
+              className="relative cursor-pointer w-fit mx-auto mb-6 z-30"
+              whileTap={{ scale: 0.8 }} // Mengecil dikit pas dipencet
+              onClick={triggerBurst}
+            >
+              <Heart size={48} className="text-pink-500 animate-pulse drop-shadow-md" fill="#ec4899" />
+              
+              {/* Animasi ledakan bunga & love */}
+              <AnimatePresence>
+                {burstItems.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+                    animate={{ opacity: 0, scale: item.scale, x: item.x, y: item.y, rotate: item.rotate }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    onAnimationComplete={() => setBurstItems((prev) => prev.filter(b => b.id !== item.id))}
+                    className="absolute top-1/2 left-1/2 pointer-events-none"
+                    style={{ marginLeft: '-12px', marginTop: '-12px' }}
+                  >
+                    {item.type === 'heart' ? (
+                      <Heart size={24} className="text-pink-500" fill="#ec4899" />
+                    ) : (
+                      <Flower2 size={24} className="text-pink-400" />
+                    )}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
             
             <h1 className="text-3xl font-bold text-gray-800 mb-6 drop-shadow-sm">Selamat Ulang Tahun, Sayang! 🎉</h1>
             
