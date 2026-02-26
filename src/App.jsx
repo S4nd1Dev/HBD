@@ -163,7 +163,28 @@ export default function App() {
               <button onClick={() => handleAnswer(false)} className="px-6 py-3 bg-pink-50 text-pink-600 font-bold rounded-xl hover:bg-pink-100 border border-pink-200 transition-colors">Hanifa dong! 🙋‍♀️</button>
               <button onClick={() => handleAnswer(false)} className="px-6 py-3 bg-pink-50 text-pink-600 font-bold rounded-xl hover:bg-pink-100 border border-pink-200 transition-colors">Dua-duanya sama aja 🙄</button>
               <button onClick={() => handleAnswer(true)} className="px-6 py-3 bg-pink-50 text-pink-600 font-bold rounded-xl hover:bg-pink-100 border border-pink-200 transition-colors">Pasti sandi lah! 👦🏻</button>
-              {isError && <p className="text-red-500 text-sm mt-2 font-bold animate-pulse">Tetooott! Bohong banget, coba jujur! 🤣</p>}
+              {/* Animasi Error yang Meriah & TETOOT */}
+            <AnimatePresence>
+              {isError && (
+                <motion.p
+                  initial={{ opacity: 0, scale: 0 }} // Mulai dari hilang & ukuran 0
+                  animate={{ 
+                    opacity: 1, 
+                    scale: [1.3, 1], // Mengembang gede dulu baru balik ke 1 (efek bounce)
+                    color: ["#ef4444", "#ffffff", "#ef4444"] // Berkedip merah-putih-merah
+                  }}
+                  exit={{ opacity: 0, scale: 0, transition: { duration: 0.2 } }} // Hilang cepet
+                  transition={{ 
+                    duration: 0.5, 
+                    ease: "backOut", // Efek membal di akhir
+                    color: { repeat: Infinity, duration: 0.3 } // Kedip warna terus-menerus
+                  }}
+                  className="text-red-600 text-base mt-4 font-extrabold bg-red-100/80 px-4 py-2 rounded-full backdrop-blur-sm shadow-md"
+                >
+                  TETOOOTT! Bohong banget, coba jujur! 🤣😜
+                </motion.p>
+              )}
+            </AnimatePresence>
             </motion.div>
           </motion.div>
         )}
@@ -239,13 +260,13 @@ export default function App() {
               </AnimatePresence>
             </motion.div>
             
-            <h1 className="text-3xl font-bold text-gray-800 mb-6 drop-shadow-sm">Selamat Ulang Tahun, Sayang! 🎉</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-6 drop-shadow-sm">Selamat Ulang Tahun, Ma Bro! 🎉</h1>
             
             {/* TULIS SURATMU DI SINI */}
             <div className="text-gray-700 text-lg leading-relaxed space-y-4 text-justify relative z-20">
               <p>
                 Happy Birthday, Hanifa cintaku! 🎈<br/>
-                Walaupun sekarang kita kepisah jarak dan cuma bisa tatap muka lewat layar, aku harap website kecil yang aku buat ini bisa bikin kamu senyum hari ini. Kamu itu anugerah terindah buat aku, dan aku bersyukur banget bisa punya kamu.
+                Walaupun sekarang kita terpisah jarak dan cuma bisa tatap muka lewat layar, aku harap website kecil yang aku buat ini bisa bikin kamu senyum hari ini. Kamu itu anugerah terindah buat aku, dan aku bersyukur banget bisa punya kamu.
               </p>
               <p>
                 Makasih udah selalu sabar nemenin aku. Semoga di umur yang baru ini kamu makin bahagia, makin sukses, dan apa yang kamu semogakan bisa tercapai.
