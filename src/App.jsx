@@ -39,7 +39,7 @@ export default function App() {
       setStep(3);
     } else {
       setIsError(true);
-      setTimeout(() => setIsError(false), 500);
+      setTimeout(() => setIsError(false), 2500);
     }
   };
 
