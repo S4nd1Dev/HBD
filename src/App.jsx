@@ -96,7 +96,9 @@ export default function App() {
               ease: "easeInOut",
             }}
           >
-            {item.isHeart ? <Heart size={item.size} fill="currentColor" /> : <Sparkles size={item.size} />}
+            {item.itemType === 0 && <Heart size={item.size} fill="currentColor" />}
+            {item.itemType === 1 && <Sparkles size={item.size} />}
+            {item.itemType === 2 && <Flower2 size={item.size} className="text-pink-400" />}
           </motion.div>
         ))}
       </div>
