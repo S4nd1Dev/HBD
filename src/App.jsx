@@ -201,7 +201,7 @@ export default function App() {
               className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white shadow-lg transition-all mb-8 ${isPlaying ? 'bg-pink-600' : 'bg-pink-500 animate-bounce'}`}
             >
               {isPlaying ? <PauseCircle size={24} /> : <PlayCircle size={24} />}
-              {isPlaying ? 'Lagu Sedang Diputar 🎶' : 'Putar Lagu "To The Bone" ▶️'}
+              {isPlaying ? 'Lagu Sedang Diputar 🎶' : 'Putar Lagu Spesial buat kamu ▶️'}
             </button>
             {showMusicWarning && <p className="text-red-500 font-bold mb-4 animate-pulse">Eits, putar lagunya dulu dong sayang! 🥺</p>}
             <p className="text-gray-600 font-semibold mb-2">Tap kadonya {5 - tapCount} kali lagi!</p>
@@ -222,48 +222,65 @@ export default function App() {
         )}
 
         {/* STEP 5: Puncak Acara (Surat + Foto) */}
+        {/* STEP 5: Puncak Acara (Surat + Orbit 10 Foto) */}
         {step === 5 && (
-          <motion.div key="step5" initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="relative z-10 w-full max-w-2xl bg-white/95 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-pink-100 text-center mt-8">
+          <motion.div key="step5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="relative w-full h-[100dvh] flex items-center justify-center overflow-hidden z-10">
             
-            {/* Foto di Pojok Kanan Atas */}
-            <div className="absolute -top-12 -right-4 md:-right-8 w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden shadow-2xl border-4 border-white rotate-6 hover:rotate-0 transition-transform duration-300">
-              <img src="/bunga.jpeg" alt="Foto Kita" className="w-full h-full object-cover" />
-            </div>
-
-           {/* LOGO HATI YANG BISA DIPENCET */}
+            {/* --- ORBIT 10 FOTO MELINGKAR (MUTER KELILING) --- */}
             <motion.div 
-              className="relative cursor-pointer w-fit mx-auto mb-6 z-30"
-              whileTap={{ scale: 0.8 }} // Mengecil dikit pas dipencet
-              onClick={triggerBurst}
+              className="absolute top-1/2 left-1/2 w-0 h-0 z-0"
+              animate={{ rotate: 360 }} // Memutar wadah besarnya 360 derajat
+              transition={{ repeat: Infinity, duration: 40, ease: "linear" }} // Muter pelan selama 40 detik
             >
-              <Heart size={48} className="text-pink-500 animate-pulse drop-shadow-md" fill="#ec4899" />
-              
-              {/* Animasi ledakan bunga & love */}
-              <AnimatePresence>
-                {burstItems.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
-                    animate={{ opacity: 0, scale: item.scale, x: item.x, y: item.y, rotate: item.rotate }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    onAnimationComplete={() => setBurstItems((prev) => prev.filter(b => b.id !== item.id))}
-                    className="absolute top-1/2 left-1/2 pointer-events-none"
-                    style={{ marginLeft: '-12px', marginTop: '-12px' }}
+              {[...Array(10)].map((_, i) => {
+                const angle = i * 36; // 360 derajat dibagi 10 foto = jarak 36 derajat tiap foto
+                return (
+                  <div 
+                    key={i} 
+                    className="absolute top-0 left-0"
+                    style={{ transform: `rotate(${angle}deg)` }}
                   >
-                    {item.type === 'heart' ? (
-                      <Heart size={24} className="text-pink-500" fill="#ec4899" />
-                    ) : (
-                      <Flower2 size={24} className="text-pink-400" />
-                    )}
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                    {/* Radius/Jarak dorongan foto dari tengah (Beda ukuran buat HP & Laptop) */}
+                    <div className="transform -translate-y-[200px] sm:-translate-y-[280px] md:-translate-y-[380px]">
+                      
+                      {/* Foto yang counter-rotate (diputar balik) biar fotonya nggak jungkir balik */}
+                      <motion.div
+                        animate={{ rotate: -360 }}
+                        transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
+                        className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-xl shadow-2xl border-4 border-white overflow-hidden relative -left-1/2 -top-1/2 bg-gray-200"
+                      >
+                         <img src={`/foto-${i + 1}.jpeg`} alt={`Kenangan ${i+1}`} className="w-full h-full object-cover" />
+                      </motion.div>
+
+                    </div>
+                  </div>
+                )
+              })}
             </motion.div>
-            
-            <h1 className="text-3xl font-bold text-gray-800 mb-6 drop-shadow-sm">Selamat Ulang Tahun, Ma Bro! 🎉</h1>
-            
-            {/* TULIS SURATMU DI SINI */}
-            <div className="text-gray-700 text-lg leading-relaxed space-y-4 text-justify relative z-20">
+            {/* ------------------------------------------------ */}
+
+            {/* KERTAS SURAT (Ada di tengah & lapisan paling atas biar nggak ketabrak foto) */}
+            <motion.div 
+              initial={{ scale: 0.5, opacity: 0 }} 
+              animate={{ scale: 1, opacity: 1 }} 
+              transition={{ duration: 1, delay: 0.5 }} 
+              className="relative z-20 w-full max-w-xl bg-white/85 backdrop-blur-md pt-10 pb-10 px-6 md:px-12 rounded-3xl shadow-[0_0_40px_rgba(236,72,153,0.3)] border-2 border-pink-200 text-center mx-4"
+            >
+              
+              {/* LOGO HATI TENGAH (Bisa dipencet keluar bunga) */}
+              <motion.div className="relative cursor-pointer w-fit mx-auto mb-4 z-30" whileTap={{ scale: 0.8 }} onClick={triggerBurst}>
+                <Heart size={48} className="text-pink-500 animate-pulse drop-shadow-md" fill="#ec4899" />
+                <AnimatePresence>
+                  {burstItems.map((item) => (
+                    <motion.div key={item.id} initial={{ opacity: 1, scale: 0, x: 0, y: 0 }} animate={{ opacity: 0, scale: item.scale, x: item.x, y: item.y, rotate: item.rotate }} transition={{ duration: 1, ease: "easeOut" }} onAnimationComplete={() => setBurstItems((prev) => prev.filter(b => b.id !== item.id))} className="absolute top-1/2 left-1/2 pointer-events-none" style={{ marginLeft: '-12px', marginTop: '-12px' }}>
+                      {item.type === 'heart' ? <Heart size={24} className="text-pink-500" fill="#ec4899" /> : <Flower2 size={24} className="text-pink-400" />}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+              
+              {/* TULIS SURATMU DI SINI */}
+            <div className="text-gray-700 text-sm md:text-base md:text-lg leading-relaxed space-y-4 text-justify relative z-30">
               <p>
                 Happy Birthday, Hanifa cintaku! 🎈<br/>
                 Walaupun sekarang kita terpisah jarak dan cuma bisa tatap muka lewat layar, aku harap website kecil yang aku buat ini bisa bikin kamu senyum hari ini. Kamu itu anugerah terindah buat aku, dan aku bersyukur banget bisa punya kamu.
@@ -271,11 +288,12 @@ export default function App() {
               <p>
                 Makasih udah selalu sabar nemenin aku. Semoga di umur yang baru ini kamu makin bahagia, makin sukses, dan apa yang kamu semogakan bisa tercapai.
               </p>
-              <p>
-               Semoga kamu selalu dikelilingi kebahagiaan, kesehatannya dijaga terus, dan kita bisa cepet-cepet ketemu buat bayar rindu ini. Have a wonderful birthday, my love. You mean the world to me. 💕"
+              <p className="font-semibold text-pink-600 mt-4 text-center">
+                Semoga kamu selalu dikelilingi kebahagiaan, kesehatannya dijaga terus, dan kita bisa cepet-cepet ketemu buat bayar rindu ini. Have a wonderful birthday, my love. You mean the world to me. 💕
               </p>
             </div>
 
+            </motion.div>
           </motion.div>
         )}
 
